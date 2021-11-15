@@ -55,25 +55,31 @@ class reader:
         pass
 
     def getBatches(self, batch_size, timeframe):
-        slices = []
+        batches = [[[], []]]
+        batch = []
         labels = []
+        slices = []
+        self._reverseLists()
         x = 0
-        self._reverseLists()
 
-        while x < batch_size:
-            slices.append([])
-            s = 0
-            for i in range(x + 1, timeframe + x + 1):
-                slices[x].append([])
-                slices[x][s].append(self.Open[i])
-                slices[x][s].append(self.High[i])
-                slices[x][s].append(self.Low[i])
-                slices[x][s].append(self.Close[i])
-                s += 1
-            labels.append(1) if (self.Close[x] - self.Close[x + 1] >= 0) else labels.append(0)
+        while x < len(self.lines):
+            if x % batch_size == 0 and x != 0:
+                batches.append([[], []])
+
+            batches[-1][0].append([])
+            for s in range(1, timeframe + 1):
+                i = x + s
+                if i < len(self.lines):
+                    batches[-1][0][-1].append([])
+                    batches[-1][0][-1][-1].append(self.Open[i])
+                    batches[-1][0][-1][-1].append(self.High[i])
+                    batches[-1][0][-1][-1].append(self.Low[i])
+                    batches[-1][0][-1][-1].append(self.Close[i])
+                else:
+                    del batches[-1]
+                    self._reverseLists()
+                    return batches
+
+            batches[-1][1].append(1) if (self.Close[x] - self.Close[x + 1] >= 0) else batches[-1][1].append(0)
             x += 1
-
-        self._reverseLists()
-
-        return slices, labels
 

@@ -29,20 +29,20 @@ criterion = nn.CrossEntropyLoss()
 
 leser = reader("ETH-BTC.csv")
 
-batch_size = 10
+batch_size = 5
+batches = []
+labels = []
 data_and_labels = leser.getBatches(batch_size, 15)
-batches = data_and_labels[0]
-
 
 def train(data):
     # RANDOM DATA
     data_shape = (batch_size, 15, 4)
 
-    out = model(torch.FloatTensor(data_and_labels[0]))
+    out = model(torch.FloatTensor(data[0]))
     print(out.softmax(dim=1))
 
     # Kalkuler loss -> label = opp, output = ned -> 1 loss, enkelt forklart..
-    loss = criterion(out, torch.LongTensor(data_and_labels[1]))
+    loss = criterion(out, torch.LongTensor(data[1]))
 
     # Kalkuler gradients for hver parameter
     loss.backward()
@@ -52,5 +52,5 @@ def train(data):
     print(loss)
 
 
-for batch in batches:
+for batch in data_and_labels:
     train(batch)
