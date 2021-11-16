@@ -22,7 +22,7 @@ class Test(torch.nn.Module):
 model = Test()
 
 # Gradient descent optimizer
-optimizer = optim.SGD(model.parameters(), lr=0.001, momentum=0.9)
+optimizer = optim.SGD(model.parameters(), lr=0.002, momentum=0.9)
 
 # CrossEntropy Loss funksjon
 criterion = nn.CrossEntropyLoss()
@@ -30,9 +30,7 @@ criterion = nn.CrossEntropyLoss()
 leser = reader("ETH-BTC.csv")
 
 batch_size = 5
-batches = []
-labels = []
-data_and_labels = leser.getBatches(batch_size, 15)
+data_and_labels = leser.getBatches(batch_size, 5)
 
 def train(data):
     # RANDOM DATA
