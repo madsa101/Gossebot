@@ -56,9 +56,6 @@ class reader:
 
     def getBatches(self, batch_size, timeframe):
         batches = [[[], []]]
-        batch = []
-        labels = []
-        slices = []
         self._reverseLists()
         x = 0
 
@@ -83,3 +80,15 @@ class reader:
             batches[-1][1].append(1) if (self.Close[x] - self.Close[x + 1] >= 0) else batches[-1][1].append(0)
             x += 1
 
+    def getSlices(self, slice_size):
+        slices = []
+        y = 0
+        while y < (len(self.lines) - slice_size):
+            x = y
+            slices.append([])
+            while x < (y + slice_size):
+                slices[-1].append([self.Open[x], self.High[x], self.Low[x], self.Close[x]])
+                x += 1
+            y += 1
+
+        return slices
