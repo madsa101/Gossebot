@@ -56,9 +56,6 @@ class reader:
 
     def getBatches(self, batch_size, timeframe):
         batches = [[[], []]]
-        batch = []
-        labels = []
-        slices = []
         self._reverseLists()
         x = 0
 
